@@ -4,7 +4,7 @@ excerpt: "Análise de votação desenvolvida em R.<br/><img src='/images/projeto
 collection: portfolio
 layout: archive
 # redirecionamento automático no AcademicPages:
-link: "[https://SEU-USUARIO.github.io/NOME-DO-OUTRO-REPO/ARQUIVO.html](https://ruas-pedro.github.io/pedro-ruas/votosriove)"
+link: "https://ruas-pedro.github.io/pedro-ruas/votosriove"
 ---
 
 Se você está vendo esta página, seu navegador não suporta redirecionamento automático. 
