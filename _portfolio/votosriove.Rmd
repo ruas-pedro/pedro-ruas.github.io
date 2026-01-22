@@ -1,0 +1,367 @@
+---
+title: "Relatório de Votos"
+author: "Pedro Ruas"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+viewport: width=device-width, initial-scale=1
+---
+
+```{r, include=FALSE}
+
+library(rmarkdown)
+library(tidyverse)
+library(plotly)
+library(sf)
+
+```
+
+# Desempenho Pedro Duarte {.tabset}
+
+As regiões em branco representam bairros onde não houve votos. Você pode dar zoom no mapa clicando e arrastando o mouse, ou reduzir o zoom com dois cliques. Para ver o nome do bairro e a quantidade de votos, basta posicionar o cursor sobre a área desejada.
+
+## Mapa interativo Duarte 2020
+```{r, include=FALSE}
+
+mapa_interativo_du_20 <- readRDS("~/filemapa_interativo_du_20.rds")
+
+
+```
+
+```{r, echo=FALSE}
+
+mapa_interativo_du_20
+
+```
+
+## Mapa Interativo Duarte 2024
+```{r, include=FALSE}
+
+mapa_interativo_du_24 <- readRDS("~/filemapa_interativo_du_24.rds")
+
+
+```
+
+```{r, echo=FALSE}
+
+mapa_interativo_du_24
+
+```
+
+# Tabela de Dados {.tabset}
+
+## Dados 2020
+
+
+```{r, include=FALSE}
+#Pedro Duarte 2020
+
+du_20_votos_bairros<-readRDS(file = "~/tab_du_votos_bairros")
+```
+
+```{r, include=FALSE}
+
+du_20_votos_bairros$Candidato <- rep("Duarte", nrow(du_20_votos_bairros))
+
+```
+
+```{r, echo=FALSE}
+paged_table(du_20_votos_bairros)
+
+```
+<span style="font-size:18px">Total de votos: 10069</span>
+
+## Dados 2024
+
+```{r, include=FALSE}
+
+Duarte_votos_bairros24 <-readRDS("~/Duarte_votos_bairros24")
+
+```
+
+```{r, include=FALSE}
+
+Duarte_votos_bairros24$Candidato <- rep("Duarte", nrow(Duarte_votos_bairros24))
+
+```
+
+```{r, echo=FALSE}
+
+paged_table(Duarte_votos_bairros24)
+
+```
+<span style="font-size:18px">Total de votos: 15404</span>  
+
+
+```{r, include=FALSE}
+
+D20 <- sum(du_20_votos_bairros$Votos)
+
+D20
+
+```
+
+```{r, include=FALSE}
+
+D24 <- sum(Duarte_votos_bairros24$Votos)
+
+D24
+
+```
+
+```{r, include=FALSE}
+
+união_du <- full_join(du_20_votos_bairros, Duarte_votos_bairros24, by = "Bairro")
+
+união_du <- união_du %>% mutate(Votos.x = coalesce(Votos.x, 0),
+                                Votos.y = coalesce(Votos.y, 0),
+                                Variação = Votos.y - Votos.x)
+
+```
+
+## Variação por Bairro
+
+```{r, echo=FALSE}
+união_du_select <- união_du %>% select(Variação, Bairro) %>% arrange(desc(Variação))
+
+
+
+paged_table(união_du_select)
+
+```
+
+```{r, include=FALSE}
+#Letícia Arsenio 2020
+
+votos_bairros_le_20 <- readRDS("~/votos_bairros_le.rds")
+
+#Letícia Arsenio 2024
+
+votos_bairros_le_24 <- readRDS("~/votos_bairros_le_24.rds")
+
+```
+
+# Desempenho Letícia Arsenio {.tabset}
+
+```{r, include=FALSE}
+
+mapa_interativo_le_20 <- readRDS("~/filemapa_interativo_le_20")
+
+
+```
+
+## Mapa interativo 2020
+```{r, echo=FALSE}
+
+mapa_interativo_le_20
+
+```
+
+## Mapa Interativo 2024
+```{r, include=FALSE}
+
+mapa_interativo_le_24 <- readRDS("~/filemapa_interativo_le_24")
+
+
+```
+
+```{r, echo=FALSE}
+
+mapa_interativo_le_24
+
+```
+
+# Tabela de Dados{.tabset}
+## Dados 2020
+```{r, include=FALSE}
+
+le_20_votos_bairros<-readRDS(file = "~/tab_le_votosbairros20")
+
+```
+
+```{r, include=FALSE}
+
+le_20_votos_bairros$Candidato <- rep("Arsenio", nrow(le_20_votos_bairros))
+
+```
+
+```{r, echo=FALSE}
+
+paged_table(le_20_votos_bairros)
+
+```
+<span style="font-size:18px">Total de votos: 9726</span>
+
+## Dados 2024
+```{r, include=FALSE}
+
+le_24_votos_bairros<-readRDS(file = "~/tab_le_votosbairros24")
+
+```
+
+```{r, include=FALSE}
+
+le_24_votos_bairros$Candidato <- rep("Arsenio", nrow(le_24_votos_bairros))
+
+```
+
+```{r, echo=FALSE}
+
+paged_table(le_24_votos_bairros)
+
+```
+<span style="font-size:18px">Total de votos: 3661</span> 
+
+```{r, include=FALSE}
+
+união_le <- full_join(le_20_votos_bairros, le_24_votos_bairros, by = "Bairro")
+
+união_le <- união_le %>% mutate(Votos.x = coalesce(Votos.x, 0),
+                                Votos.y = coalesce(Votos.y, 0),
+                                Variação = Votos.y - Votos.x)
+
+```
+## Variação por Bairro
+```{r, echo=FALSE}
+união_le_select <- união_le %>% select(Variação, Bairro) %>% arrange(Variação)
+
+
+
+paged_table(união_le_select)
+
+```
+
+```{r, include=FALSE}
+
+sum(le_20_votos_bairros$Votos)
+
+```
+
+```{r, include=FALSE}
+
+le_24 <- sum(le_24_votos_bairros$Votos)
+
+le_24
+
+```
+
+# Desempenho Gabriel Costenaro{.tabset}
+## Mapa Interativo
+
+
+```{r, include=FALSE}
+
+#Gabriel Costenaro 2024
+
+votos_bairros_cos_24 <- readRDS("~/votos_bairros_cos_24.rds")
+
+
+```
+
+```{r, include=FALSE}
+
+mapa_interativo_cos_24 <- readRDS("~/filemapa_interativo_cos_24")
+
+
+```
+
+```{r, echo=FALSE}
+
+mapa_interativo_cos_24
+
+```
+# Tabela de Dados{.tabset}
+## Dados 2024
+```{r, echo=FALSE}
+
+cos_24_votos_bairros <- readRDS(file = "~/tab_cos_votosbairros24")
+
+```
+
+```{r, include=FALSE}
+cos_24_votos_bairros$Candidato <- rep("Costenaro", nrow(cos_24_votos_bairros))
+
+
+```
+
+```{r, echo=FALSE}
+
+paged_table(cos_24_votos_bairros)
+      
+```
+
+<span style="font-size:18px">Total de votos: 12018</span>
+
+```{r, include=FALSE}
+
+cos_24 <- sum(cos_24_votos_bairros$Votos)
+
+cos_24
+
+# para fazer contagem pode utilizar tbm a função lenght
+
+```
+
+# Evolução dos votos
+```{r, include=FALSE}
+
+comparativo <-data.frame(Duarte = c(10069, 15404),
+            Arsenio = c(9726, 3661),
+            Costenaro = c(0, 12018),
+            Ano = c("2020", "2024"))
+
+
+
+```
+
+```{r, include=FALSE}
+
+comparativo <- data.frame(votos = c(10069, 15404, 9762, 3661, 0, 12018),
+           Candidato = c("Duarte", "Duarte", "Arsenio", "Arsenio", "Costenaro", "Costenaro"),
+           ano = c(2020, 2024, 2020, 2024, 2020, 2024))
+
+```
+
+```{r, echo=FALSE}
+
+ggplot2::ggplot(comparativo, aes(x = ano, y = votos, color = Candidato)) +
+  ggplot2::geom_line(linewidth = 1)+
+  ggplot2::labs(title = "", x = "Ano", y = "Votos") +
+  geom_point(size = 3) +
+  ggplot2::theme_minimal()
+
+
+```
+
+```{r, include=FALSE}
+
+sd(Duarte_votos_bairros24$Votos)/mean(Duarte_votos_bairros24$Votos)
+
+sd(le_24_votos_bairros$Votos)/mean(le_24_votos_bairros$Votos)
+
+sd(cos_24_votos_bairros$Votos)/mean(cos_24_votos_bairros$Votos)
+
+sd(du_20_votos_bairros$Votos)/mean(du_20_votos_bairros$Votos)
+
+sd(le_20_votos_bairros$Votos)/mean(le_24_votos_bairros$Votos)
+```
+<br>
+<span style="font-size:18px">   Com este gráfico, é possível observar que a queda de votos da candidata Letícia Arsenio é muito próxima ao aumento de votos de Pedro Duarte. Arsenio perdeu 6.065 votos, enquanto Duarte ganhou 5.335. Ao mesmo tempo, os votos do candidato Costenaro parecem ser significativamente independentes dos dois. Nos gráficos de mapa, podemos ver que os votos de Arsenio e Duarte se concentram na Zona Sul do Rio, especialmente na Barra da Tijuca, uma área de classes mais altas. Por outro lado, os votos de Costenaro estão mais bem distribuídos, com desempenho superior, em relação aos outros candidatos, nas áreas periféricas do Rio, como os bairros Campo Grande, Bangu e Santa Cruz. Ainda assim, os bairros onde ele obteve mais votos foram Campo Grande e Barra da Tijuca. 
+<br>  
+Outro índice que indica essa maior dispersão dos votos do candidato Costenaro é o coeficiente de variação. Duarte apresenta o maior coeficiente de variação, seguido por Arsenio e, por último, Costenaro (2,25; 1,29; 1,13). O número baixo da Arsenio se deve à grande perda de votos nas regiões onde tinha maior concentração, como a Barra da Tijuca, onde perdeu 595 votos. Em 2020, seu coeficiente de variação era de 4,04, enquanto Duarte tinha 2,32, um número bem próximo ao de 2024.
+<br>  
+É possível que a principal fonte da queda de desempenho da candidata Letícia Asenio, seja a perda do apoio do MBL e do Partido Novo. Tanto Pedro Duarte quanto Gabriel Costenaro fazem parte do Partido Novo e do MBL. Já Arsenio deixou o Partido Novo e se filiou ao Podemos. Os três candidatos são críticos de Bolsonaro, por isso esse fator talvez não tenha tido tanto impacto, mesmo o posicionamento dos três em relação ao ex-presidente sendo diferente.</span>
+<br>
+<br>
+
+# Contato
+
+Email: pedro_ruas95@yahoo.com.br  
+Whatsapp: 21 99712-4135  
+Linkedin:
+[linkedin.com/in/pedro-ruas95](https://linkedin.com/in/pedro-ruas95)
