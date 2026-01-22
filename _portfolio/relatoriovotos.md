@@ -1,6 +1,6 @@
 ---
 title: "Relatório de Votos"
-excerpt: "Análise de votação desenvolvida em R.<br/><img src='{{ site.baseurl }}/images/mapavotos.png'>"
+excerpt: "Análise de votação desenvolvida em R.<br/><img src='https://ruas-pedro.github.io/pedro-ruas.github.io//images/mapavotos.png'>"
 collection: portfolio
 layout: archive
 # redirecionamento automático no AcademicPages:
