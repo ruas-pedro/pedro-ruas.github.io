@@ -1,7 +1,7 @@
 ---
 title: "Relatório de Votos"
 author: "Pedro Ruas"
-date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+date: 2026-01-22
 output:
   html_document:
     number_sections: yes
@@ -364,4 +364,5 @@ Outro índice que indica essa maior dispersão dos votos do candidato Costenaro 
 Email: pedro_ruas95@yahoo.com.br  
 Whatsapp: 21 99712-4135  
 Linkedin:
+
 [linkedin.com/in/pedro-ruas95](https://linkedin.com/in/pedro-ruas95)
